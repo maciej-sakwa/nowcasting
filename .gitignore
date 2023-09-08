@@ -1,4 +1,4 @@
-\__pychache__
+*.pyc
 nowcasting/__init__.py
 nowcasting/indicators.py
 nowcasting/keras_utils.py
