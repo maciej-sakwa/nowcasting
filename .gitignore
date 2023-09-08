@@ -1,0 +1,15 @@
+nowcasting\__pychache__
+nowcasting\__init.__pychache__
+nowcasting\indicators.py
+nowcasting\keras_utils.py
+nowcasting\one_img_generators.py
+
+\datasets
+\methods
+\results
+\run_regression
+\.idea
+\.vscode
+\*.txt
+\regression_ghi.py
+\Notebook.ipynb
