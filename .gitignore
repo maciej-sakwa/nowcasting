@@ -1,8 +1,8 @@
 *.pyc
-nowcasting/__init__.py
-nowcasting/indicators.py
-nowcasting/keras_utils.py
-nowcasting/one_img_generators.py
+src_nowcasting/__init__.py
+src_nowcasting/indicators.py
+src_nowcasting/keras_utils.py
+src_nowcasting/one_img_generators.py
 
 \dataset
 \methods

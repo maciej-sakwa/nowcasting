@@ -63,7 +63,7 @@ def SCNN_diff(input_shape=(128, 128, 1)) -> models.Sequential:
     model.add(Dense(256, activation='linear'))
     model.add(Dropout(0.2))
     model.add(Dense(1, activation='linear'))
-    model.summary()
+    # model.summary()
     return model
 
 
@@ -92,7 +92,7 @@ def SCNN(input_shape=(128, 128, 1)) -> models.Sequential:
     model.add(Dense(256, activation='linear'))
     model.add(Dropout(0.2))
     model.add(Dense(1, activation='linear'))
-    model.summary()
+    # model.summary()
     return model
 
 
