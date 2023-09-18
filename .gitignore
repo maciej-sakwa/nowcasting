@@ -12,4 +12,4 @@ src_nowcasting/one_img_generators.py
 \.vscode
 *.txt
 \regression_ghi.py
-Notebook.ipynb
+*.ipynb
