@@ -13,9 +13,9 @@ from src_cloud_tracking import visualisation_2d
 
 N_PIXELS = 7
 LAB_POSITION = [9.15, 45.5, 0]
-HOUR = '2019-12-11 10:10:00'
-SUN_DISTANCE = 0.3
-SUN_HEIGHT = np.ceil(SUN_DISTANCE / 0.05) * 4_500
+HOUR = '2019-11-26 13:10:00'
+SUN_DISTANCE = 1
+SUN_HEIGHT = 90_000
 
 # Cloud height definition - according to **
 
@@ -60,7 +60,7 @@ def get_sun_position(time: str, lab_pos: list, sun_dist: int, height: int) -> li
 
     x_diff = sun_dist * math.sin((180 - azimuth_angle) / 180 * math.pi)
     y_diff = sun_dist * math.cos((azimuth_angle) / 180 * math.pi)
-    z_diff = sun_dist * math.sin((elevation_angle) / 180 * math.pi) * height
+    z_diff = sun_dist * math.tan((elevation_angle) / 180 * math.pi) * height
 
     return [LAB_POSITION[0] + x_diff, LAB_POSITION[1] + y_diff, LAB_POSITION[2] + z_diff]
 

@@ -13,7 +13,7 @@ Functions:
 |-  plot_box() -
 |-  visualise() -
 
-V.1.0 MS 18/09/23
+V.1.01 MS 18/09/23
 
 """
 cmap = matplotlib.colormaps['jet']
@@ -90,24 +90,24 @@ def plot_face(ax: object, box: object, face: list, edge_color: str):
 
 def plot_box(ax: object, box: object, sun_vector: list, output=None):
     "Plot the box by plotting diagrams of all the faces of it"
-
     
+    var = False
     # assert output not in ['index', 'c_type', 'c_top'], \
     #     'Incorrect return type, has to be: index, c_type, c_top'
 
     if box.sunpath_intersects_box_3d(sun_vector) and sun_vector[1][2] > 0: 
+        
         edge_color = 'r'  # Mark passed clouds
-    else: edge_color = 'k'
+        if output == 'index': var =  box.flat_id
+        if output == 'c_type': var = box.cloud_type
+        if output == 'c_top': var = box.cloud_top
 
+    else: edge_color = 'k'
     
     faces = define_faces(box)
+    for f in faces: plot_face(ax, box, f, edge_color)
 
-    for f in faces:
-        plot_face(ax, box, f, edge_color)
-
-    if output == 'index': return box.flat_id
-    if output == 'c_type': return box.cloud_type
-    if output == 'c_top': return box.cloud_top
+    if var: return var 
     return
 
 
@@ -128,12 +128,15 @@ def visualise(boxes: list, sun_vector:list, figsize=(8, 8), output=None):
     ax.set_zlim(0, 10_000)
     # plt.grid(alpha=0.5)
 
-    output = []
+    var = []
     colors = []
 
     for i, b in enumerate(boxes):
 
-        if b.cloud_top: output.append(plot_box(ax, b, sun_vector, output=None))
+        if b.cloud_top: 
+            plot = plot_box(ax, b, sun_vector, output)
+            if plot: var.append(plot)   # append the output variable if the plot box is marked
+        
 
 
     ax.scatter(lab_position[0], lab_position[1], lab_position[2], marker='x', s=50, c='r')
@@ -155,4 +158,4 @@ def visualise(boxes: list, sun_vector:list, figsize=(8, 8), output=None):
 
     plt.show()
 
-    return
+    return var
