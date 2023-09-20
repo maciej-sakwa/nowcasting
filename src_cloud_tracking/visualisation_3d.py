@@ -91,14 +91,14 @@ def plot_face(ax: object, box: object, face: list, edge_color: str):
 def plot_box(ax: object, box: object, sun_vector: list, output=None):
     "Plot the box by plotting diagrams of all the faces of it"
     
-    var = False
+    var = None
     # assert output not in ['index', 'c_type', 'c_top'], \
     #     'Incorrect return type, has to be: index, c_type, c_top'
 
     if box.sunpath_intersects_box_3d(sun_vector) and sun_vector[1][2] > 0: 
         
         edge_color = 'r'  # Mark passed clouds
-        if output == 'index': var =  box.flat_id
+        if output == 'index': var = (box.x_id, box.y_id)
         if output == 'c_type': var = box.cloud_type
         if output == 'c_top': var = box.cloud_top
 
@@ -107,7 +107,7 @@ def plot_box(ax: object, box: object, sun_vector: list, output=None):
     faces = define_faces(box)
     for f in faces: plot_face(ax, box, f, edge_color)
 
-    if var: return var 
+    if var is not None: return var 
     return
 
 

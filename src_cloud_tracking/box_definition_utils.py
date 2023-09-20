@@ -46,9 +46,9 @@ def set_up_boxes(box: object, data: pd.DataFrame, n_pixels: int):
 
     # Initialize mesh like structure of the data - the transformation has the purpose of setting up the array in the correct 'visual' order
     y_data = data.lat.values
-    y_mesh = np.array([y_data[0+7*i:7+7*i] for i in range(7)])
+    y_mesh = np.array([y_data[0+n_pixels*i:n_pixels+n_pixels*i] for i in range(n_pixels)])
     x_data = data.lon.values
-    x_mesh = np.array([x_data[0+7*i:7+7*i] for i in range(7)])
+    x_mesh = np.array([x_data[0+n_pixels*i:n_pixels+n_pixels*i] for i in range(n_pixels)])
 
     # Find the starting point (in the bottom left corner)
     start_point = (x_mesh[-1, 0], y_mesh[-1, 0])
