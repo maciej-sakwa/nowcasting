@@ -4,9 +4,9 @@ import pickle
 from keras import optimizers
 from keras.callbacks import CSVLogger, ModelCheckpoint, TensorBoard, EarlyStopping
 from sklearn.model_selection import train_test_split
-from nowcasting import constants
-from nowcasting import get_models
-from nowcasting.sequence_img_generator import *
+from src_nowcasting import constants
+from src_nowcasting import get_models
+from src_nowcasting.sequence_img_generator import *
 
 # get the start time
 st = time.time()
@@ -185,8 +185,8 @@ for i in range(len(y_hat_GHI)):
 
 mse_1 = np.sum(mse)
 mae_1 = np.sum(mae)
-rmse = np.sqrt(mse_1/len(y_hat_GHI))
-mae_error = mae_1/samples
+rmse = np.sqrt(mse_1 / len(y_hat_GHI))
+mae_error = mae_1 / samples
 nrmse = rmse/I_ave*100
 print(f'Test RMSE: {rmse}')
 print(f'Test nRMSE: {nrmse}')

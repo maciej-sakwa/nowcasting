@@ -13,7 +13,7 @@ from src_cloud_tracking import visualisation_2d
 
 N_PIXELS = 7
 LAB_POSITION = [9.15, 45.5, 0]
-HOUR = '2019-11-26 13:10:00'
+HOUR = '2019-11-26 14:25:00'
 SUN_DISTANCE = 1
 SUN_HEIGHT = 90_000
 
@@ -70,7 +70,7 @@ def main():
     
     # Load data from the stored file, select the hour of interest, and convert the cloud type to int
     df_satellite = pd.read_parquet(path = r'dataset/sat_data_full.parquet.gzip')
-    df_satellite_hour = df_satellite[df_satellite.data_val == HOUR].copy()
+    df_satellite_hour = df_satellite[df_satellite.date_time == HOUR].copy()
     df_satellite_hour.saf_ct = df_satellite_hour.saf_ct.astype(int)
 
     # Define the sun location for the hour of interest, define the sun vector connecting sun and lab location
