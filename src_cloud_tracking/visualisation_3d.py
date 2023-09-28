@@ -4,6 +4,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import matplotlib
 import matplotlib.pyplot as plt
 
+
 """
 3d visualisation module. Contains definition of the transformations done to 'boxes' to show them in 3d.
 

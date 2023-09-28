@@ -42,7 +42,7 @@ SUN_HEIGHT = 90_000
 # 20	undefined (undefined by CMa)	
 
 CLOUD_MIN = [
-    None, None, None, None, None, 0, 0, 0, 0, 2_000, 2_000, 2_000, 2_000, 7_000, 8_000, 6_096, 6_096, 6_096, 6_096, 500, None
+    None, None, None, None, None, 0, 0, 0, 0, 2_000, 2_000, 2_000, 2_000, 6_096, 6_096, 6_096, 6_096, 6_096, 6_096, 500, None
     ]
 assert len(CLOUD_MIN) == 21, 'Specify the cloud bottom for all 21 cloud types'
 
@@ -69,7 +69,7 @@ def get_sun_position(time: str, lab_pos: list, sun_dist: int, height: int) -> li
 def main():
     
     # Load data from the stored file, select the hour of interest, and convert the cloud type to int
-    df_satellite = pd.read_parquet(path = r'dataset/sat_data_full.parquet.gzip')
+    df_satellite = pd.read_parquet(path = r'dataset/dataframes/sat_data_full.parquet.gzip')
     df_satellite_hour = df_satellite[df_satellite.date_time == HOUR].copy()
     df_satellite_hour.saf_ct = df_satellite_hour.saf_ct.astype(int)
 
