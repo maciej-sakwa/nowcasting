@@ -57,10 +57,15 @@ class Box():
         except IndexError:
             self.cloud_bottom = None #TODO think of how to define the bottom if the cloud is not specified (is it necessary in the first place)
 
-        assert self.cloud_top > self.cloud_bottom, "Top should be higher than bottom"
+        try:
+            assert self.cloud_top > self.cloud_bottom, f"Top should be higher than bottom: c_top: {self.cloud_top}, c_bottom: {self.cloud_bottom}, c_type: {self.cloud_type}"
+        except TypeError:
+            self.cloud_top = None
+            self.cloud_bottom = None
+        except AssertionError: # Due to data inconsistency cloud types are quite often miss-labelled
+            self.cloud_bottom = 1_000
         # if self.cloud_top < self.cloud_bottom: 
         #     print(f'Ctop: {self.cloud_top}, cbottom: {self.cloud_bottom}')
-
 
         return 
 
