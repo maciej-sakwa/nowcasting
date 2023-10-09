@@ -2,6 +2,26 @@ import numpy as np
 import cv2
 from functools import partial
 
+"""
+Image pre-processing module. Contains definition of the class used to preprocess images.
+V.1.0.0 MS 09/10/23
+
+Classes PreProcessImage() - image preprocessing engine
+    Init methods:
+        |- __init__() - initialize the transformation pipeline
+    Methods:
+        |- crop_image(image) - apply mask and cropping to the image
+        |- std_scale_image(image) - std_scaling of the image, limits the min and max
+        |- log_filter(image) - apply logarithmic filter to the image (not used in the end)
+        |- gamma_correction(image) - apply gamma correction (not used in the end)
+        |- convert_to_uint8(image) - converts image from floar range (0-1) to uint8 range (0-255)
+        |- resize_and_stack_channels(image) - resize images (to 128x128) and stack them in 3 channels (not necessary now, but old pictures had 3 channels)
+        |- transform_image(image) - applies transformation pipeline to the image
+    Private Methods:
+        |- _execute_pipeline(image) - execution helper funciton
+
+"""
+
 
 # Preprocessing of the images from the camera to use them in the trained model
 class PreProcessImage():
@@ -18,7 +38,7 @@ class PreProcessImage():
         # In this way it will be better suited to use it in the loop
 
 
-    def crop_image(self, image: np.array) -> np.array:
+    def crop_image(self, image: np.ndarray) -> np.ndarray:
         # The initial image is of the size [480x640]. This function crops it to a square with black corners
 
         # Cropping and applying a mask to filter the circle in the centre
@@ -35,7 +55,7 @@ class PreProcessImage():
         return cropped_image[33:417, 128:512]
 
 
-    def std_scale_image(self, image: np.array) -> np.array:
+    def std_scale_image(self, image: np.ndarray) -> np.ndarray:
 
         MAX_LIMIT = 45_000
         MIN_LIMIT = 35_000
@@ -57,7 +77,7 @@ class PreProcessImage():
         return scaled_image / np.max(scaled_image)                  # divide by max to bring to 0-1 range
 
 
-    def log_filter(self, image: np.array) -> np.array:
+    def log_filter(self, image: np.ndarray) -> np.ndarray:
 
         c = 255 / np.log(1 + np.max(image))
         log_image = c * (np.log(image + 1.01))
@@ -66,19 +86,19 @@ class PreProcessImage():
         return log_image
 
 
-    def gamma_correction(self, image: np.array, gamma: float) -> np.array:
+    def gamma_correction(self, image: np.ndarray, gamma: float) -> np.ndarray:
 
         gamma_corrected = np.array((255*(image / 255)) ** gamma, dtype = 'uint8')
 
         return gamma_corrected
 
-    def convert_to_uint8(self, image: np.array) -> np.array: 
+    def convert_to_uint8(self, image: np.ndarray) -> np.ndarray: 
         # Converts image from floating point (0-1) to uint8 (0-255) range
 
         return (image * 255).astype('uint8')
 
 
-    def resize_and_stack_channels(self, image: np.array) -> np.array:
+    def resize_and_stack_channels(self, image: np.ndarray) -> np.ndarray:
         # The network is trained to feed in images with dimentions (128, 128, 3)
         
         resized_image = cv2.resize(image, (128, 128))
@@ -86,7 +106,7 @@ class PreProcessImage():
         return np.stack((resized_image, resized_image, resized_image), axis = 2)
 
 
-    def execute_pipeline(self, image: np.array) -> np.array:
+    def _execute_pipeline(self, image: np.ndarray) -> np.ndarray:
         # Executes the prepared image transformation pipeline
         
         for step in self.pipeline:
@@ -94,20 +114,8 @@ class PreProcessImage():
 
         return image
 
-    def transform_image(self, image: np.array):
+    def transform_image(self, image: np.ndarray):
         
-        new_image = self.execute_pipeline(image)
+        new_image = self._execute_pipeline(image)
 
         return new_image
-
-
-# if __name__ == '__main__':
-
-#     pipeline = [
-#         partial(std_scale_image()), 
-#         partial(convert_to_uint8()),
-#         partial(crop_image()),
-#         partial(resize_and_stack_channels())
-#     ]
-
-#     pass

@@ -1,5 +1,3 @@
-"""Image generation"""
-
 from typing import Tuple
 
 import pandas as pd
@@ -9,6 +7,34 @@ from keras.utils import Sequence
 import numpy as np
 import cv2
 import os
+
+"""
+Data processing module. Contains definition of the classes and functions used to stack data.
+V.1.0.0 MS 09/10/23
+
+Class DataGenerator_SCNN(Sequence) - stacks images into 3 img sequence for prediction
+    Init methods:
+    |- __init__() - Initialization, dataframe with ['Irr', 'Image', 'Target'] columns is necessary input
+    |- __len__() - Denotes the number of batches per epoch
+    |- __getitem__() - Generate one batch of data
+    Methods:
+    |- on_epoch_end - Updates indexes after each epoch
+    Private Methods:
+    |- __data_generation(dataframe) - Generates data containing batch_size samples, 
+                dataframe with ['Irr', 'Image', 'Target'] columns is necessary input
+Class  DataGeneratorGHI_SCNN(Sequence) - stacks images into 3 img sequence for prediction (same as above but it encodes upper pixels in images for SCNN)
+    Init methods:
+    |- __init__() - Initialization, dataframe with ['Irr', 'Image', 'Target'] columns is necessary input
+    |- __len__() - Denotes the number of batches per epoch
+    |- __getitem__() - Generate one batch of data
+    Methods:
+    |- on_epoch_end - Updates indexes after each epoch
+    Private Methods:
+    |- __data_generation(dataframe) - Generates data containing batch_size samples, 
+                dataframe with ['Irr', 'Image', 'Target'] columns is necessary input, encodes upper pixels with GHI info
+Functions:
+|- generate_dataframe(GHI_PATH, FORECAST_HORIZON, SEQUENCE_HORIZON = None, CLEAR_SKY_MODEL='simplified_solis') - Example of the dataframe generation funcion
+"""
 
 
 class DataGenerator_SCNN(Sequence):
@@ -129,13 +155,26 @@ class DataGeneratorGHI_SCNN(Sequence):
             return X, y
 
 
-def generate_dataframe(GHI_PATH, FORECAST_HORIZON, SEQUENCE_HORIZON = None, CLEAR_SKY_MODEL='simplified_solis') -> pd.DataFrame:
+def generate_dataframe(GHI_PATH: str, FORECAST_HORIZON: int, SEQUENCE_HORIZON = None, CLEAR_SKY_MODEL='simplified_solis') -> pd.DataFrame:
+    """Example of the dataframe generation funcion
+
+    Args:
+        GHI_PATH (str): path to weather station files. It is necessary that they contain GHI information.
+        FORECAST_HORIZON (int): Forecast horizon in minutes, e.g., 30
+        SEQUENCE_HORIZON (_type_, optional): Distance between images in sequence used to predict. Defaults to half of FORECAST_HORIZON.
+        CLEAR_SKY_MODEL (str, optional): CS model type. Defaults to 'simplified_solis'.
+
+    Returns:
+        pd.DataFrame: Concatenated df with necessary columns to be fed into DataGenerator_SCNN()
+    """
+    
     df_data = pd.DataFrame()
 
     # Create a df for the model runs. The most important variables present in the final df are 'Image', 'Irr', 'Target' 
     # 'Image' - contains a list of names for the image sequence
     # 'Irr' - contains a list of measured irradiances for the instances of the Image
     # 'Terget' - contains the target ghi for the prediction in the specified horizon
+
     EPSILON = 1e-6
     if SEQUENCE_HORIZON == None:
         SEQUENCE_HORIZON = FORECAST_HORIZON // 2

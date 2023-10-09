@@ -1,32 +1,48 @@
 import enum
 import os
 
-# Data.
-N_CLASSES = 5
 
-# Paths.
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../'))
+MODEL_TYPE = 'scnn'                                         # model_type chosen for the training.
+FORECAST_HORIZON = 30                                       # time horizon.
+NO_IMAGES = 3
+EPSILON = 1e-3
 
-CLASSES_CHECKPOINTS_DIR = os.path.join(ROOT_DIR, r'run_classification\checkpoints')
-CLASSES_DATASET_DIR = os.path.join(ROOT_DIR, r'dataset\classes_dataset')
-CLASSES_PREPROC_DIR = os.path.join(ROOT_DIR, r'dataset\classes_preprocessing')
-CLASSES_RESULTS_DIR = os.path.join(ROOT_DIR, r'results\classification_forecast')
-CLASS_SEQ_DATASET_DIR = os.path.join(ROOT_DIR, r'dataset\class_seq_dataset')
-CLASS_TEST_SEQ = os.path.join(ROOT_DIR, r'dataset\class_sequence_test')
-CLASS_TRAIN_SEQ = os.path.join(ROOT_DIR, r'dataset\class_seq_dataset\train')
-CLASS_VAL_SEQ = os.path.join(ROOT_DIR, r'dataset\class_seq_dataset\validation')
-GHI_DATASET_DIR = os.path.join(ROOT_DIR, r'dataset\ghi_dataset')
-GREY_IMAGES_PATH = os.path.join(ROOT_DIR, r'dataset\pro_img')
-IMAGES_PATH = os.path.join(ROOT_DIR, '003_Cusa')
-MASK_DIR = os.path.join(ROOT_DIR, r'dataset\three2one\maschera.npy')
-MATLAB_DATA_DIR = os.path.join(ROOT_DIR, r'dataset\raw\*')
-PNG = os.path.join(ROOT_DIR, r'dataset\png')
-PRO_IMAGES_PATH = os.path.join(ROOT_DIR, r'dataset\pro_img')
-PROVA = os.path.join(ROOT_DIR, r'prova')
-REGR_CHECKPOINTS_DIR = os.path.join(ROOT_DIR, r'run_regression\checkpoints')
-REGR_RESULTS_DIR = os.path.join(ROOT_DIR, r'results\regression_forecast')
-REGR_SEQ_DATASET_DIR = os.path.join(ROOT_DIR, r'dataset\regr_seq_dataset')
-REUNIWATT = os.path.join(ROOT_DIR, r'dataset\dati_reuniwatt')
-TEST = os.path.join(ROOT_DIR, r'dataset\classes_test')
-TRAIN = os.path.join(ROOT_DIR, r'dataset\classes_dataset\train')
-VAL = os.path.join(ROOT_DIR, r'dataset\classes_dataset\validation')
+# Image parameters
+IMG_SIZE = [128, 128]                                       # image size.
+CHANNELS = 1                                                # image channels.
+ELEVATION_THRESHOLD = 20
+
+TRAIN_BATCHSIZE = 32                                        # batch size for train.
+TEST_BATCHSIZE = 1                                          # batch size for test.
+EPOCHS = 100                                                # maximum number of epochs.
+TRAIN_SIZE = 0.8
+
+
+# Paths
+PATH_INPUT_FOLDER = r'..\dataset\IR_images_nowcasting'              # Raw images folder path
+PATH_OUTPUT_FOLDER = r'..\dataset\IR_images_postprocess'            # Postprocessed images folder path
+PATH_WEATHER_FILES = r'..\dataset\sensors'                          # Weather station data folder path
+
+CHECKPOINT_PATH = r'.\model\checkpoints'                       # path to the model weight folder
+LOG_PATH = None                                                     # path to save the log csv folder
+
+
+
+
+# Parameter dictionaries
+train_params = {'batch_size': TRAIN_BATCHSIZE,
+           'dim': (IMG_SIZE[0], IMG_SIZE[1], 1 * NO_IMAGES),
+           'channel_IMG': CHANNELS,
+           'shuffle': False,
+           'iftest': False}
+
+valid_params = {'batch_size': TRAIN_BATCHSIZE,
+           'dim': (IMG_SIZE[0], IMG_SIZE[1], 1 * NO_IMAGES),
+           'channel_IMG': CHANNELS,
+           'iftest': False}
+
+test_params = {'batch_size': TEST_BATCHSIZE,
+           'dim': (IMG_SIZE[0], IMG_SIZE[1], 1 * NO_IMAGES),
+           'channel_IMG': CHANNELS,
+           'shuffle': False,
+           'iftest': False}
