@@ -15,3 +15,6 @@ src_nowcasting/one_img_generators.py
 *.txt
 \regression_ghi.py
 *.db
+
+Notebook_*.ipynb
+sandbox.ipynb
