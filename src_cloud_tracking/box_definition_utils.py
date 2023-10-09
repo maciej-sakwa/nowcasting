@@ -23,7 +23,7 @@ Functions:
 
 # These functions align the indices of df and boxes
 
-def find_y_id(row: pd.Series):
+def find_y_id(row: pd.Series) -> int:
     "Specify the y or lat-wise index"
 
     y_id = int(str(row.id_msg)[2])
@@ -31,15 +31,54 @@ def find_y_id(row: pd.Series):
     return  np.abs(9 - y_id)
 
 
-def find_x_id(row: pd.Series):
-    "Specify the y or lat-wise index"
+def find_x_id(row: pd.Series) -> int:
+    """Specify the y or lat-wise index
+
+    Args:
+        row (pd.Series): _description_
+
+    Returns:
+        int: _description_
+    """
+    
 
     x_id = int(str(row.id_msg)[-2:])
 
     return np.abs(x_id - 47)
 
 
-def set_up_boxes(box: object, data: pd.DataFrame, n_pixels: int):
+def find_y_id_big(row: pd.Series) -> int:
+    "Specify the y or lat-wise index"
+
+    y_id = int(str(row.id_msg)[1:3])
+    
+    return  np.abs(83 - y_id)
+
+def find_x_id_big(row: pd.Series) -> int:
+    """Specify the y or lat-wise index
+
+    Args:
+        row (pd.Series): _description_
+
+    Returns:
+        int: _description_
+    """
+    
+    x_id = int(str(row.id_msg)[-2:])
+
+    return np.abs(x_id - 43)
+
+def set_up_boxes(box: object, data: pd.DataFrame, n_pixels: int) -> list:
+    """_summary_
+
+    Args:
+        box (object): _description_
+        data (pd.DataFrame): _description_
+        n_pixels (int): _description_
+
+    Returns:
+        list: _description_
+    """
 
     boxes = []
     full_mesh = []
@@ -89,3 +128,62 @@ def set_up_boxes(box: object, data: pd.DataFrame, n_pixels: int):
 
     return boxes
 
+
+
+def compile_cloud_dataset(satellite_data: pd.DataFrame or str) -> None:
+    pass
+'''Create a function out of these code, input -> satellite data or folder path, output -> dictionary of cloud data'''
+# unique_dates = np.sort(df_satellite.date_time.unique())
+# delta = timedelta(minutes=10)
+# cloud_data = {}
+
+
+# for i, date in tqdm(enumerate(unique_dates)):
+
+#     boxes = []
+
+#     # Select data
+#     df_satellite_date = df_satellite[df_satellite.date_time == date].copy()
+#     df_satellite_date.saf_ct = df_satellite_date.saf_ct.astype(int)
+
+#     # Convert the datetime format to string
+#     date = pd.to_datetime(date) - delta
+#     date_string = datetime.strftime(date, '%Y-%m-%d %H:%M')
+
+#     # Find sun location
+#     sun_location = get_sun_position(date, LAB_POSITION, SUN_DISTANCE, SUN_HEIGHT)
+#     sun_vector = [
+#         [LAB_POSITION[0], LAB_POSITION[1], LAB_POSITION[2]],
+#         [sun_location[0], sun_location[1], sun_location[2]]
+#     ]
+
+#     # Set up boxes
+#     boxes = box_definition_utils.set_up_boxes(Box, df_satellite_date, 7)
+
+#     # Align indices
+#     df_satellite_date['box_id'] = df_satellite_date.apply(lambda row: box_definition_utils.find_x_id(row)*7 + box_definition_utils.find_y_id(row), axis=1)
+
+#     # Update boxes with data from the loaded sattelite df according to their index. 
+#     for i, b in enumerate(boxes):
+#         b.specify_cloud_type(df_satellite_date, CLOUD_MIN)
+
+
+#     # Initialize the output matrices
+#     cloud_cover = np.zeros((N_PIXELS, N_PIXELS))
+#     cloud_passed = np.zeros((N_PIXELS, N_PIXELS))
+
+
+#     for b in boxes:
+#         # Cloud thickness matrix
+#         if b.cloud_top is not None:
+#             cloud_cover[b.x_id, b.y_id] = (b.cloud_top - b.cloud_bottom) / 10_000
+#             # Passed cloud matrix
+#             if b.sunpath_intersects_box_3d(sun_vector): 
+#                 cloud_passed[b.x_id, b.y_id] = 1
+   
+   
+#     added_data = np.stack((cloud_cover, cloud_passed), axis = 2)
+#     cloud_data[date_string] = added_data
+
+# with open(r'dataset/cloud_data.pickle', 'wb') as file:
+#     pickle.dump(cloud_data, file)
