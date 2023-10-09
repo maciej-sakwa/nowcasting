@@ -1,9 +1,6 @@
 import enum
 import os
 
-# Data.
-N_CLASSES = 5
-
 # Paths.
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../'))
 

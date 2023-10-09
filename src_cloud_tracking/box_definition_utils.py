@@ -47,6 +47,27 @@ def find_x_id(row: pd.Series) -> int:
     return np.abs(x_id - 47)
 
 
+def find_y_id_big(row: pd.Series) -> int:
+    "Specify the y or lat-wise index"
+
+    y_id = int(str(row.id_msg)[1:3])
+    
+    return  np.abs(83 - y_id)
+
+def find_x_id_big(row: pd.Series) -> int:
+    """Specify the y or lat-wise index
+
+    Args:
+        row (pd.Series): _description_
+
+    Returns:
+        int: _description_
+    """
+    
+    x_id = int(str(row.id_msg)[-2:])
+
+    return np.abs(x_id - 43)
+
 def set_up_boxes(box: object, data: pd.DataFrame, n_pixels: int) -> list:
     """_summary_
 

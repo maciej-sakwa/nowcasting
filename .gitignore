@@ -7,9 +7,11 @@ src_nowcasting/one_img_generators.py
 \dataset
 \methods
 \results
+\models
 \run_regression
 \.idea
 \.vscode
 *.txt
 \regression_ghi.py
 *.ipynb
+*.gif

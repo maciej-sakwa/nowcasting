@@ -26,8 +26,12 @@ def visualise(boxes: list, sun_vector:list):
     # Visuals
     plt.ylabel('Lat')
     plt.xlabel('Lon')
-    plt.ylim(45.32, 45.73)
-    plt.xlim(8.95, 9.35)
+    if len(boxes) == 49:
+        ax.set_ylim(45.32, 45.73)
+        ax.set_xlim(8.95, 9.35)
+    else:
+        ax.set_ylim(45.15, 45.91)
+        ax.set_xlim(8.75, 9.55)
     plt.grid(alpha=0.5)
 
     patches = []

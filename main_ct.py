@@ -11,9 +11,9 @@ from src_cloud_tracking import visualisation_2d
 
 ############################################# PARAMETERS #############################################
 
-N_PIXELS = 7
+N_PIXELS = 15
 LAB_POSITION = [9.15, 45.5, 0]
-HOUR = '2019-11-26 14:25:00'
+HOUR = '2023-08-26 17:25:00'
 SUN_DISTANCE = 1
 SUN_HEIGHT = 90_000
 
@@ -69,22 +69,24 @@ def get_sun_position(time: str, lab_pos: list, sun_dist: int, height: int) -> li
 def main():
     
     # Load data from the stored file, select the hour of interest, and convert the cloud type to int
-    df_satellite = pd.read_parquet(path = r'dataset/dataframes/sat_data_full.parquet.gzip')
-    df_satellite_hour = df_satellite[df_satellite.date_time == HOUR].copy()
+    # df_satellite = pd.read_parquet(path = r'dataset/dataframes/sat_data_full.parquet.gzip')
+    df_satellite = pd.read_parquet(path = r'dataset/dataframes/new_sat_data_full.parquet.gzip')
+    df_satellite_hour = df_satellite[df_satellite.data_val == HOUR].copy()
     df_satellite_hour.saf_ct = df_satellite_hour.saf_ct.astype(int)
 
     # Define the sun location for the hour of interest, define the sun vector connecting sun and lab location
-    sun_location = get_sun_position(HOUR, LAB_POSITION, SUN_DISTANCE, SUN_HEIGHT)
+    sun_location = get_sun_position(HOUR +'+0000', LAB_POSITION, SUN_DISTANCE, SUN_HEIGHT)
     sun_vector = [
         [LAB_POSITION[0], LAB_POSITION[1], LAB_POSITION[2]],
         [sun_location[0], sun_location[1], sun_location[2]]
         ]
 
     # Define the boxes
-    boxes = box_definition_utils.set_up_boxes(Box, df_satellite_hour, 7)
+    boxes = box_definition_utils.set_up_boxes(Box, df_satellite_hour, N_PIXELS)
 
     # Align indices
-    df_satellite_hour['box_id'] = df_satellite_hour.apply(lambda row: box_definition_utils.find_x_id(row)*7 + box_definition_utils.find_y_id(row), axis=1)
+    df_satellite_hour['box_id'] = df_satellite_hour.apply(
+        lambda row: box_definition_utils.find_x_id_big(row)*N_PIXELS + box_definition_utils.find_y_id_big(row), axis=1)
 
     # Update boxes with data from the loaded sattelite df according to their index. 
     for i, b in enumerate(boxes):

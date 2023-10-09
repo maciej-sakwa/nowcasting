@@ -3,7 +3,7 @@ import cv2
 from functools import partial
 
 
-# Preprocessing of the images from the camera to use them in the trained model
+# Preprocessing of the images from the new camera to use them in the old trained model, and to train new models
 class PreProcessImage():
 
     def __init__(self):

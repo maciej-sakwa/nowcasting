@@ -11,7 +11,7 @@ import os
 
 class DataGenerator_SCNN(Sequence):
 
-    'Generates data for Keras'
+    'Generates data for Keras without pixel encoding'
     def __init__(self, dataframe, batch_size=128, dim=(128, 128, 3), channel_IMG = 1, shuffle=False, iftest=False):
         'Initialization'
         self.dim = dim
@@ -64,7 +64,7 @@ class DataGenerator_SCNN(Sequence):
 
 class DataGeneratorGHI_SCNN(Sequence):
 
-    'Generates data for Keras'
+    'Generates data for Keras with pixel encoding'
     def __init__(self, dataframe, img_folder, batch_size=128, dim=(128, 128, 3), channel_IMG = 1, shuffle=False, iftest=False):
         'Initialization'
         self.dim = dim
@@ -123,7 +123,7 @@ class DataGeneratorGHI_SCNN(Sequence):
             file_name.append(img_row)
         if self.iftest == True:
             return X, y, file_name
-        elif self.iftest == False:
+        else:
             return X, y
 
 
