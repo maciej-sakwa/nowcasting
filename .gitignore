@@ -1,0 +1,17 @@
+*.pyc
+src_nowcasting/__init__.py
+src_nowcasting/indicators.py
+src_nowcasting/keras_utils.py
+src_nowcasting/one_img_generators.py
+
+\dataset
+\model
+\mlruns
+\methods
+\results
+\run_regression
+\.idea
+\.vscode
+*.txt
+\regression_ghi.py
+*.db
